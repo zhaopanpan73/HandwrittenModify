@@ -6,6 +6,9 @@
 
 知识点：
 
+tensorflow的文件读取
+
+###tensorflow使用文件名队列+内存队列双队列的形式读入文件
 
 
 You can find the project requirements in requirements.txt

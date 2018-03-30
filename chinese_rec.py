@@ -35,6 +35,7 @@ FLAGS = tf.app.flags.FLAGS
 
 
 class DataIterator:
+    ##先获取文件名列表
     def __init__(self, data_dir):
         # Set FLAGS.charset_size to a small value if available computation power is limited.
         truncate_path = data_dir + ('%05d' % FLAGS.charset_size)
@@ -61,7 +62,7 @@ class DataIterator:
         return images
 
     def input_pipeline(self, batch_size, num_epochs=None, aug=False):
-        # 1、convert images to a tensor   构造数据queue
+        # 1、convert images to a tensor   构造数据queue --> 产生文件名队列
         images_tensor = tf.convert_to_tensor(self.image_names, dtype=tf.string)
         # 执行tf.convert_to_tensor()的时候，在图上生成了一个Op，Op中保存了传入参数的数据。op经过计算产生tensor
         labels_tensor = tf.convert_to_tensor(self.labels, dtype=tf.int64)
@@ -136,11 +137,11 @@ def train():
     test_feeder = DataIterator(data_dir='../data/test/')
     with tf.Session() as sess:
         # session操作之前启动队列runners才能激活pipelines/input pipeline 并载入数据
-        train_images, train_labels = train_feeder.input_pipeline(batch_size=FLAGS.batch_size, aug=True)    # num_epochs what's refer to ?
+        train_images, train_labels = train_feeder.input_pipeline(batch_size=FLAGS.batch_size, aug=True)
         test_images, test_labels = test_feeder.input_pipeline(batch_size=FLAGS.batch_size)
         graph = build_graph(top_k=1)  # very important
         sess.run(tf.global_variables_initializer())
-        # 4、 ## 启动queue线程
+        # 4、 启动queue线程
         coord = tf.train.Coordinator()
         threads = tf.train.start_queue_runners(sess=sess, coord=coord)
         saver = tf.train.Saver()
