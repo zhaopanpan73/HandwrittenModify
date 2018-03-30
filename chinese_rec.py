@@ -66,7 +66,7 @@ class DataIterator:
         # 执行tf.convert_to_tensor()的时候，在图上生成了一个Op，Op中保存了传入参数的数据。op经过计算产生tensor
         labels_tensor = tf.convert_to_tensor(self.labels, dtype=tf.int64)
         input_queue = tf.train.slice_input_producer([images_tensor, labels_tensor], num_epochs=num_epochs)
-        # 2、 ## queue输出数据
+        # 2、queue输出数据
         labels = input_queue[1]
         images_content = tf.read_file(input_queue[0])   # read images from the queue,refer to input_queue
         images = tf.image.convert_image_dtype(tf.image.decode_png(images_content, channels=1), tf.float32)
