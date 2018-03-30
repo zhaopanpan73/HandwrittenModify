@@ -41,5 +41,5 @@
 
 **图解：**
 
-    ![avatar](https://github.com/zhaopanpan73/HandwrittenModify/blob/master/images/AnimatedFileQueues.gif)
+   ![](./images/AnimatedFileQueues.gif)
 
