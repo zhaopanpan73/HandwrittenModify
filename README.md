@@ -41,5 +41,5 @@
 
 **图解：**
 
-    ![avatar](http://wiki.jikexueyuan.com/project/tensorflow-zh/images/AnimatedFileQueues.gif)
+    ![avatar](https://github.com/zhaopanpan73/HandwrittenModify/blob/master/images/AnimatedFileQueues.gif)
 
