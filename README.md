@@ -1,8 +1,8 @@
 # 中文汉字识别（in tensorflow）
 
-<font size="12" color="black">输入：已经制作好的手写中文汉字数据集</font>
+<font size="20" color="black">输入：已经制作好的手写中文汉字数据集</font>
 
-<font size="12" color="black">输出：识别的准确率</font>
+<font size="20" color="black">输出：识别的准确率</font>
 
 知识点：
 
