@@ -67,7 +67,9 @@ class DataIterator:
         # 执行tf.convert_to_tensor()的时候，在图上生成了一个Op，Op中保存了传入参数的数据。op经过计算产生tensor
         labels_tensor = tf.convert_to_tensor(self.labels, dtype=tf.int64)
         input_queue = tf.train.slice_input_producer([images_tensor, labels_tensor], num_epochs=num_epochs)
-        # 2、queue输出数据
+        # 2、queue读取数据
+        # 每次read_file的执行都会从文件中读取一行内容， decode_png
+        # 操作会解析这一行内容并将其转为张量列表
         labels = input_queue[1]
         images_content = tf.read_file(input_queue[0])   # read images from the queue,refer to input_queue
         images = tf.image.convert_image_dtype(tf.image.decode_png(images_content, channels=1), tf.float32)
@@ -76,6 +78,8 @@ class DataIterator:
         new_size = tf.constant([FLAGS.image_size, FLAGS.image_size], dtype=tf.int32)
         images = tf.image.resize_images(images, new_size)
         # collect batches of images before processing
+        # 在数据输入管线的末端， 我们需要有另一个队列来执行输入样本的训练，评价和推理。因此我们使用tf.train.shuffle_batch
+        # 函数来对队列中的样本进行乱序处理
         # 3、shuffle_batch批量从queu批量读取数据
         image_batch, label_batch = tf.train.shuffle_batch([images, labels], batch_size=batch_size, capacity=50000,
                                                           min_after_dequeue=10000) # produce shunffled batch
@@ -140,9 +144,11 @@ def train():
         train_images, train_labels = train_feeder.input_pipeline(batch_size=FLAGS.batch_size, aug=True)
         test_images, test_labels = test_feeder.input_pipeline(batch_size=FLAGS.batch_size)
         graph = build_graph(top_k=1)  # very important
-        sess.run(tf.global_variables_initializer())
+        sess.run(tf.global_variables_initializer()) # 只要图中存在计算变量的，都进行初始化一下
         # 4、 启动queue线程
+        # 启动一个tf.train.Coordinator，这样可以在发生错误的情况下正确地关闭这些线程。如果你对训练迭代数做了限制，那么需要使用一个训练迭代数计数器，并且需要被初始化。
         coord = tf.train.Coordinator()
+        # 在调用run或者eval去执行read之前，必须调用tf.train.start_queue_runners来将文件名填充到队列
         threads = tf.train.start_queue_runners(sess=sess, coord=coord)
         saver = tf.train.Saver()
 
