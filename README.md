@@ -11,14 +11,22 @@
 <font size="20" color="black">**tensorflow使用文件名队列+内存队列双队列的形式读入文件**
 
 <font size="20" color="black">**主要有一下步骤：**
-1.文件名列表
-2.可配置的 文件名乱序(shuffling)
-3.可配置的 最大训练迭代数(epoch limit)
-4.文件名队列
-5.针对输入文件格式的阅读器
-6.纪录解析器
-7.可配置的预处理器
-8.样本队列
+
+**1.文件名列表**
+
+**2.可配置的 文件名乱序(shuffling)**
+
+**3.可配置的 最大训练迭代数(epoch limit)**
+
+**4.文件名队列**
+
+**5.针对输入文件格式的阅读器**
+
+**6.纪录解析器**
+
+**7.可配置的预处理器**
+
+**8.样本队列**
 
 
 You can find the project requirements in requirements.txt
